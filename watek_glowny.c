@@ -12,17 +12,16 @@ void mainLoop()
 				
 				changeState(PAIRING, "PAIRING");
 
-				int zegar = lamport;
 				for (int i = 0; i < size; i++) {
 					if (i != rank) {
 						packet_t pakiet;
-						pakiet.ts = zegar;
+						pakiet.ts = lamport;
 
-						sendPacket(&pakiet, i, REQ_I);
+						sendPacket(&pakiet, i, S_PAIR);
 					}
 				}
 				q_element_t elem;
-				elem.priority = zegar;
+				elem.priority = lamport;
 				elem.process = rank;
 				insertElem(&queue, elem);
 
