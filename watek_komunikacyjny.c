@@ -31,7 +31,7 @@ void *startKomWatek(void *ptr)
 
         case ACK_I:
 			debug("Dostałem wiadomość ACK_I od %d ", pakiet.src);
-			int myPos = findProcess(&processQueue, rank);
+			int myPos = findPosition(&queue, rank);
 			if (myPos % 2 == 1){
 				przeciwnik = queue.data[myPos - 1].process;
 				debug("Moim przeciwnikiem jest %d", przeciwnik);
@@ -42,7 +42,7 @@ void *startKomWatek(void *ptr)
 					if (i != rank) {
 						packet_t pakiet;
 						pakiet.ts = zegar;
-						pakiet.data = queue.data[myPos - 1].process);
+						pakiet.data = queue.data[myPos - 1].process;
 						sendPacket(&pakiet, i, PAIR);
 					}
 				}
