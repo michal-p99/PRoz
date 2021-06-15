@@ -13,7 +13,7 @@ state_t stan=REST;
 volatile char end = FALSE;
 int size,rank, tallow; /* nie trzeba zerować, bo zmienna globalna statyczna */
 MPI_Datatype MPI_PAKIET_T;
-pthread_t threadKom, 
+pthread_t threadKom;
 pthread_mutex_t lamportMut = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t stateMut = PTHREAD_MUTEX_INITIALIZER;
 
