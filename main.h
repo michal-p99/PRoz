@@ -79,7 +79,7 @@ extern int lamport;
 
 #ifdef DEBUG
 //#define debug(FORMAT,...) printf("%c[%d;%dm [%d]: " FORMAT "%c[%d;%dm\n",  27, (1+(rank/7))%2, 31+(6+rank)%7, rank, ##__VA_ARGS__, 27,0,37);
-#define debug(FORMAT,...) printf("%c[%d;%dm [tid %d][ts %d]: " FORMAT "%c[%d;%dm\n",  27, (1+(rank/7))%2, 31+(6+rank)%7, rank, lamport, ##VA_ARGS, 27,0,37);
+#define debug(FORMAT,...) printf("%c[%d;%dm [tid %d][ts %d]: " FORMAT "%c[%d;%dm\n",  27, (1+(rank/7))%2, 31+(6+rank)%7, rank, lamport, ##__VA_ARGS__, 27,0,37);
 #else
 #define debug(...) ;
 #endif
@@ -99,5 +99,5 @@ extern int lamport;
 
 /* wysyłanie pakietu, skrót: wskaźnik do pakietu (0 oznacza stwórz pusty pakiet), do kogo, z jakim typem */
 void sendPacket(packet_t *pkt, int destination, int tag);
-void changeState( state_t );
+void changeState( state_t ,const char* name);
 #endif
