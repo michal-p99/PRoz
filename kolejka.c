@@ -45,7 +45,7 @@ void initQueue(process_q_t* process_q, int initReserved)
 	q_element_t* ptr = (q_element_t*)(malloc(sizeof(q_element_t) * initReserved));
 	for (int i = 0; i < process_q->size; i++)
 		ptr[i].process = -1;
-	process_q->data = ptr;
+	process_q->data->process = ptr->process;
 	process_q->reserved = initReserved;
 
 }
