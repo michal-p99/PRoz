@@ -11,7 +11,7 @@ void mainLoop()
 				sleep(SEC_IN_STATE);
 				
 				changeState(PAIRING, "PAIRING");
-				int prio=lamport
+				int prio = lamport;
 				for (int i = 0; i < size; i++) {
 					if (i != rank) {
 						packet_t pakiet;
