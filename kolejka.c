@@ -1,5 +1,5 @@
 #include "kolejka.h"
-
+#include "main.h"
 void insertElem(process_q_t* process_q, q_element_t elem)
 {
 	/*if (process_q->size == process_q->reserved)
