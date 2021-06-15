@@ -97,7 +97,7 @@ void inicjuj(int *argc, char ***argv)
     srand(rank);
 
     pthread_create( &threadKom, NULL, startKomWatek , 0);
-    }
+    
     debug("Zainicjalizowany");
 }
 
