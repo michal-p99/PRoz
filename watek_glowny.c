@@ -8,8 +8,10 @@ void mainLoop()
         int perc = random()%100; 
 		debug("test");
         if (perc<STATE_CHANGE_PROB) {
+			debug("test2");
             if (stan==REST) {
 				sleep(SEC_IN_STATE);
+				debug("test3");
 				pthread_mutex_lock(&stateMut);
 				changeState(PAIRING, "PAIRING");
 
