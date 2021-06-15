@@ -11,18 +11,18 @@ void mainLoop()
 				sleep(SEC_IN_STATE);
 				
 				changeState(PAIRING, "PAIRING");
-
+				int prio=lamport
 				for (int i = 0; i < size; i++) {
 					if (i != rank) {
 						packet_t pakiet;
-						pakiet.ts = lamport;
+						pakiet.ts = prio;
 
 						sendPacket(&pakiet, i, REQ_I);
 					}
 				}
 				q_element_t elem;
-				elem.priority = lamport;
-				debug("lamport %d",lamport)
+				elem.priority = prio;
+				debug("lamport %d",prio)
 				elem.process = rank;
 				insertElem(&queue, elem);
 
