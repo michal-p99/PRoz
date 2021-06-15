@@ -60,7 +60,7 @@ void *startKomWatek(void *ptr)
 			removeProcess(&queue, pakiet.src);
 			removeProcess(&queue, pakiet.data);
 			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
-			if (pakiet.data = rank) {
+			if (pakiet.data == rank) {
 				debug("Moim przeciwnikiem jest %d rank %d", pakiet.src, rank);
 				changeState(START_ZASOB, "START_ZASOB");
 			}
