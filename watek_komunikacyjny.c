@@ -23,8 +23,8 @@ void *startKomWatek(void *ptr)
 			elem.priority = pakiet.ts;
 			elem.process = pakiet.src;
 			insertElem(&queue, elem);
-			if (size >= 4)
-				debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+			
+			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 			sendPacket(0, pakiet.src, ACK_I);
 			break;
@@ -47,6 +47,8 @@ void *startKomWatek(void *ptr)
 				}
 				removeProcess(&queue, queue.data[myPos].process);
 				removeProcess(&queue, queue.data[myPos - 1].process);
+				debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+
 
 				ackCountS = 0;
 				for (int i = 0; i < size; i++)
@@ -67,8 +69,10 @@ void *startKomWatek(void *ptr)
 			debug("Dostałem wiadomość PAIR od %d z %d", pakiet.src,pakiet.data);
 			removeProcess(&queue, pakiet.src);
 			removeProcess(&queue, pakiet.data);
+			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+
 			if (pakiet.data = rank) {
-				debug("Moim przeciwnikiem jest %d", pakiet.src);
+				debug("Moim przeciwnikiem jest %d rank %d", pakiet.src, rank);
 				changeState(START_ZASOB, "START_ZASOB");
 			}
 
