@@ -24,10 +24,8 @@ void *startKomWatek(void *ptr)
 					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 				break;
         case REQ_MISKA:
-			if (true) {
+			
 
-
-			}
             break;
 	    default:
 	    break;
