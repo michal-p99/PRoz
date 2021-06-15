@@ -43,7 +43,8 @@ void initQueue(process_q_t* process_q, int initReserved)
 	process_q->size = 0;
 
 	q_element_t* ptr = (q_element_t*)(malloc(sizeof(q_element_t) * initReserved));
-
+	for (int i = 0; i < process_q->size; i++)
+		ptr[i].process = -1;
 	process_q->data = ptr;
 	process_q->reserved = initReserved;
 
@@ -81,23 +82,4 @@ void removeProcess(process_q_t* process_q, int process)
 	process_q->data[process_q->size - 1].process = -1;
 	process_q->data[process_q->size - 1].priority = -1;
 	process_q->size--;
-}
-
-void removeNFirstElems(process_q_t* process_q, int N)
-{
-	if (N > process_q->size)
-		N = process_q->size;
-	int i = 0;
-	while (i < process_q->size - N)
-	{
-		process_q->data[i] = process_q->data[i + N];
-		i++;
-	}
-	while (i < process_q->size)
-	{
-		process_q->data[i].priority = -1;
-		process_q->data[i].process = -1;
-		i++;
-	}
-	process_q->size = process_q->size - N;
 }

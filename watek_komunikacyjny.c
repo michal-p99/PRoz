@@ -13,20 +13,68 @@ void *startKomWatek(void *ptr)
         MPI_Recv( &pakiet, 1, MPI_PAKIET_T, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 		incBiggerLamport( pakiet.ts);
 		
+
+
         switch ( status.MPI_TAG ) {
-		case S_PAIR:
-                debug("Dostałem wiadomość PAIRING od %d ",pakiet.src);
-				q_element_t elem;
-				elem.priority = pakiet.ts;
-				elem.process = pakiet.src;
-				insertElem(&queue, elem);
-				if (size >= 4)
-					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
-				break;
-        case REQ_MISKA:
-			
+
+		case REQ_I:
+			debug("Dostałem wiadomość PAIRING od %d ",pakiet.src);
+			q_element_t elem;
+			elem.priority = pakiet.ts;
+			elem.process = pakiet.src;
+			insertElem(&queue, elem);
+			if (size >= 4)
+				debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+
+			sendPacket(0, pakiet.src, ACK_I);
+			break;
+
+        case ACK_I:
+			debug("Dostałem wiadomość ACK_I od %d ", pakiet.src);
+			int myPos = findProcess(&processQueue, rank);
+			if (myPos % 2 == 1){
+				przeciwnik = queue.data[myPos - 1].process;
+				debug("Moim przeciwnikiem jest %d", przeciwnik);
+				changeState(START_SALA, "START_SALA");
+				
+				for (int i = 0; i < size; i++) {
+					if (i != rank) {
+						packet_t pakiet;
+						pakiet.ts = lamport;
+						pakiet.data = queue.data[myPos - 1].process);
+						sendPacket(&pakiet, i, PAIR);
+					}
+				}
+				removeProcess(&queue, queue.data[myPos].process);
+				removeProcess(&queue, queue.data[myPos - 1].process);
+
+				ackCountS = 0;
+				for (int i = 0; i < size; i++)
+				{
+					if (i != rank)
+					{
+						packet_t pakiet;
+						pakiet.ts = lamport;
+						sendPacket(&pakiet, i, REQ_SALA);
+					}
+				}
+				ackSPriority = lamport;
+			}
 
             break;
+
+		case PAIR:
+			debug("Dostałem wiadomość PAIR od %d z %d", pakiet.src,pakiet.data);
+			removeProcess(&queue, pakiet.src);
+			removeProcess(&queue, pakiet.data);
+			if (pakiet.data = rank) {
+				debug("Moim przeciwnikiem jest %d", pakiet.src);
+				changeState(START_ZASOB, "START_ZASOB");
+			}
+
+
+			break;
+
 	    default:
 	    break;
         }

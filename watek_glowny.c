@@ -6,12 +6,9 @@ void mainLoop()
     srandom(rank);
     while (TRUE) {
         int perc = random()%100; 
-		debug("test");
         if (perc<STATE_CHANGE_PROB) {
-			debug("test2");
             if (stan==REST) {
 				sleep(SEC_IN_STATE);
-				debug("test3");
 				
 				changeState(PAIRING, "PAIRING");
 

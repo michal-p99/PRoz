@@ -16,6 +16,13 @@
 #define TRUE 1
 #define FALSE 0
 
+#define LOSER_TIME 5
+
+#define SLIPY 3
+#define MISKA 3
+#define PINEZKI 3
+#define SALE 3
+
 /* używane w wątku głównym, determinuje jak często i na jak długo zmieniają się stany */
 #define STATE_CHANGE_PROB 50
 #define SEC_IN_STATE 2
@@ -23,14 +30,15 @@
 #define ROOT 0
 
 /* stany procesu */
-typedef enum {REST,  PAIRING, InFinish} state_t;
+typedef enum {REST,  PAIRING,START_SALA,START_ZASOB, InFinish} state_t;
 extern state_t stan;
 extern int rank;
 extern int size;
 extern int lamport;
 extern pthread_mutex_t stateMut;
 extern pthread_mutex_t lamportMut;
-
+extern int ackCountS;
+extern int ackSPriority;
 extern process_q_t queue;
 
 
@@ -52,9 +60,10 @@ extern MPI_Datatype MPI_PAKIET_T;
 #define ACK_MISKA 6
 #define REQ_SLIPKI 7
 #define ACK_SLIPKI 8
-#define S_PAIR 9
-#define I_PAIR 10
-#define DEBATE 11
+#define REQ_I 9
+#define ACK_I 10
+#define PAIR 11
+#define DEBATE 12
 
 /* macro debug - działa jak printf, kiedy zdefiniowano
    DEBUG, kiedy DEBUG niezdefiniowane działa jak instrukcja pusta 
