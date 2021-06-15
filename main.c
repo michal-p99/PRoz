@@ -11,7 +11,7 @@
 
 state_t stan=REST;
 volatile char end = FALSE;
-int size,rank, tallow; /* nie trzeba zerować, bo zmienna globalna statyczna */
+int size,rank; /* nie trzeba zerować, bo zmienna globalna statyczna */
 MPI_Datatype MPI_PAKIET_T;
 pthread_t threadKom;
 pthread_mutex_t lamportMut = PTHREAD_MUTEX_INITIALIZER;
@@ -43,10 +43,6 @@ void check_thread_support(int provided)
 
 int incLamport(){
 	pthread_mutex_lock( &lamportMut );
-	if(stan==InFinish){
-		pthread_mutex_unlock ( &lamportMut );
-		return lamport;
-	}
 	lamport++;
 	int tmp = lamport;
 	pthread_mutex_unlock(&lamportMut);
@@ -96,6 +92,7 @@ void inicjuj(int *argc, char ***argv)
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     srand(rank);
 
+	initQueue(&queue, size);
     pthread_create( &threadKom, NULL, startKomWatek , 0);
     
     debug("Zainicjalizowany");
