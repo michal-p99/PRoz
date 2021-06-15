@@ -30,8 +30,6 @@ int biggerPriority(q_element_t element1, q_element_t element2);
 void removeProcess(process_q_t* process_q, int process);
 
 
-void freeQueue(process_q_t* process_queue);
-
 
 
 #endif

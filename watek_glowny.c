@@ -18,7 +18,7 @@ void mainLoop()
 						packet_t pakiet;
 						pakiet.ts = zegar;
 
-						sendPacket(&pakiet, i, S_PAIR);
+						sendPacket(&pakiet, i, REQ_I);
 					}
 				}
 				q_element_t elem;

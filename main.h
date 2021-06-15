@@ -39,6 +39,7 @@ extern pthread_mutex_t stateMut;
 extern pthread_mutex_t lamportMut;
 extern int ackCountS;
 extern int ackSPriority;
+extern int przeciwnik;
 extern process_q_t queue;
 
 
