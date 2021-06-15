@@ -6,7 +6,7 @@ void mainLoop()
     srandom(rank);
     while (TRUE) {
         int perc = random()%100; 
-
+		debug("test");
         if (perc<STATE_CHANGE_PROB) {
             if (stan==REST) {
 				sleep(SEC_IN_STATE);
