@@ -52,11 +52,12 @@ int incLamport(){
 
 int incBiggerLamport(int n){
 	pthread_mutex_lock( &lamportMut );
-	if(stan==InFinish){
-		pthread_mutex_unlock ( &lamportMut );
-		return lamport;
-	}
-	lamport= (n>lamport)?n+1:lamport+1;
+
+	if (lamport > pakiet.ts)
+		lamport++;
+	else
+		lamport = n + 1;
+
 	int tmp = lamport;
 	pthread_mutex_unlock(&lamportMut);
 	return tmp;
