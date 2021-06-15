@@ -18,7 +18,7 @@ void *startKomWatek(void *ptr)
         switch ( status.MPI_TAG ) {
 
 		case REQ_I:
-			debug("Dostałem wiadomość PAIRING od %d ",pakiet.src);
+			debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.ts);
 			q_element_t elem;
 			elem.priority = pakiet.ts;
 			elem.process = pakiet.src;
@@ -30,7 +30,7 @@ void *startKomWatek(void *ptr)
 			break;
 
         case ACK_I:
-			debug("Dostałem wiadomość ACK_I od %d ", pakiet.src);
+			debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.ts);
 			int myPos = findPosition(&queue, rank);
 			if (myPos % 2 == 1){
 				przeciwnik = queue.data[myPos - 1].process;
@@ -56,12 +56,12 @@ void *startKomWatek(void *ptr)
             break;
 
 		case PAIR:
-			debug("Dostałem wiadomość PAIR od %d z %d", pakiet.src,pakiet.data);
+			debug("Dostałem wiadomość PAIR od %d z %d ts %d", pakiet.src,pakiet.data,pakiet.ts);
 			removeProcess(&queue, pakiet.src);
 			removeProcess(&queue, pakiet.data);
 			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 			if (pakiet.data == rank) {
-				debug("Moim przeciwnikiem jest %d rank %d", pakiet.src, rank);
+				debug("Moim przeciwnikiem jest %d ", pakiet.src);
 				changeState(START_ZASOB, "START_ZASOB");
 			}
 
