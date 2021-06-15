@@ -4,7 +4,7 @@
 void mainLoop()
 {
     srandom(rank);
-    while (stan != InFinish) {
+    while (TRUE) {
         int perc = random()%100; 
 
         if (perc<STATE_CHANGE_PROB) {

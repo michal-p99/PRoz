@@ -27,7 +27,7 @@ typedef enum {REST,  PAIRING, InFinish} state_t;
 extern state_t stan;
 extern int rank;
 extern int size;
-extern int lamport
+extern int lamport;
 extern pthread_mutex_t stateMut;
 extern pthread_mutex_t lamportMut;
 
