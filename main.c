@@ -133,10 +133,6 @@ void sendPacket(packet_t *pkt, int destination, int tag)
 void changeState( state_t newState,const char* nazwa )
 {
     pthread_mutex_lock( &stateMut );
-    if (stan==InFinish) { 
-	pthread_mutex_unlock( &stateMut );
-        return;
-    }
     stan = newState;
 	debug("Zmieniam stan na {%s}", nazwa);
     pthread_mutex_unlock( &stateMut );

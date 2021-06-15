@@ -12,7 +12,7 @@ void mainLoop()
             if (stan==REST) {
 				sleep(SEC_IN_STATE);
 				debug("test3");
-				pthread_mutex_lock(&stateMut);
+				
 				changeState(PAIRING, "PAIRING");
 
 				int zegar = lamport;
@@ -31,7 +31,7 @@ void mainLoop()
 
 				if (size >= 4)
 					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
-				pthread_mutex_unlock(&stateMut);
+				
             } 
         }
         sleep(SEC_IN_STATE);
