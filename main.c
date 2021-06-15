@@ -53,7 +53,7 @@ int incLamport(){
 int incBiggerLamport(int n){
 	pthread_mutex_lock( &lamportMut );
 
-	if (lamport > pakiet.ts)
+	if (lamport > n)
 		lamport++;
 	else
 		lamport = n + 1;
