@@ -28,7 +28,8 @@ extern state_t stan;
 extern int rank;
 extern int size;
 
-
+extern pthread_mutex_t stateMut;
+extern pthread_mutex_t lamportMut;
 
 extern process_q_t queue;
 
