@@ -35,7 +35,6 @@ int biggerPriority(q_element_t element1, q_element_t element2)
 	if (element1.priority == element2.priority)
 		if (element1.process < element2.process)
 			return TRUE;
-	debug("elem %d  tab %d", element1.priority, element2.priority);
 	return FALSE;
 }
 

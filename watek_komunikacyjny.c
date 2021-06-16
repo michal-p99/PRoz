@@ -9,7 +9,7 @@ void *startKomWatek(void *ptr)
     packet_t pakiet;
     /* Obrazuje pętlę odbierającą pakiety o różnych typach */
     while (TRUE) {
-	debug("czekam na recv");
+	//debug("czekam na recv");
         MPI_Recv( &pakiet, 1, MPI_PAKIET_T, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 		incBiggerLamport( pakiet.ts);
 		
@@ -30,7 +30,7 @@ void *startKomWatek(void *ptr)
 			break;
 
         case ACK_I:
-			debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.data);
+			//debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.data);
 			if (stan == PAIRING) {
 				int myPos = findPosition(&queue, rank);
 				if (myPos % 2 == 1) {
