@@ -85,7 +85,6 @@ void *startKomWatek(void *ptr)
 
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
-			q_element_t elem;
 			if ((stan == START_SALA && pakiet.data > ackSPriority) ||
 				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
 			{
@@ -108,7 +107,7 @@ void *startKomWatek(void *ptr)
 			if (stan == START_SALA && pakiet.data == ackSPriority)
 			{
 				ackCounterSala++;
-				if (ackCounterS == size - SALE)
+				if (ackCounterSala == size - SALE)
 				{
 					ackCounterSala = 0;
 					sendPacket(0, przeciwnik, JEST_SALA);
@@ -125,7 +124,7 @@ void *startKomWatek(void *ptr)
 			}
 
 
-			break
+			break;
 
 	    default:
 	    break;
