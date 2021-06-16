@@ -34,7 +34,6 @@ void mainLoop()
 				if (enemyReady) {
 					debug("DEBATA ROZPOCZÊTA z %d", przeciwnik);
 					sleep(DEBATE_TIME);
-					debug("Moje %d   enemy %d", pickedZasob, enemyPickedZasob);
 					if (getResult()) {
 						debug("WYGRA£EM z %d", przeciwnik);
 						changeState(REST, "REST");
@@ -72,7 +71,7 @@ void returnEverything() {
 	enemyReady = FALSE;
 }
 void returnMiska() {
-	for (int i = 0; i < countQueueZasobSize;i++) {
+	for (int i = 0; i < queue_zasob.size;i++) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_zasob.data[i].priority;
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_MISKA);
@@ -82,7 +81,7 @@ void returnMiska() {
 	countQueueZasobSize = 0;
 }
 void returnPinezki(){
-	for (int i = 0; i < countQueueZasobSize; i++) {
+	for (int i = 0; i < queue_zasob.size; i++) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_zasob.data[i].priority;
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_PINEZKI);
@@ -92,7 +91,7 @@ void returnPinezki(){
 	countQueueZasobSize = 0;
 	}
 void returnSlipki() {
-	for (int i = 0; i < countQueueZasobSize; i++) {
+	for (int i = 0; i < queue_zasob.size; i++) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_zasob.data[i].priority;
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_SLIPKI);
@@ -102,7 +101,7 @@ void returnSlipki() {
 	countQueueZasobSize = 0;
 }
 void returnSale() {
-	for (int i = 0; i < countQueueSalaSize; i++) {
+	for (int i = 0; i < queue_sala.size; i++) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_sala.data[i].priority;
 		sendPacket(pkt, queue_sala.data[i].process, ACK_SALA);
