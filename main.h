@@ -42,9 +42,9 @@ extern int ackSPriority;
 extern int przeciwnik;
 extern process_q_t queue;
 extern process_q_t queue_zasob;
-extern int ackCounterZasob;
+extern int ackCountZasob;
 extern process_q_t queue_sala;
-extern int ackCounterSala;
+extern int ackCountSala;
 
 /* to może przeniesiemy do global... */
 typedef struct {
