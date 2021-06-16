@@ -30,7 +30,100 @@ void mainLoop()
 					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 				
             } 
+			if (stan == START_DEBATE) {
+				if (enemyReady) {
+					debug("DEBATA ROZPOCZÊTA z %d", przeciwnik);
+					sleep(DEBATE_TIME);
+					if (getResult) {
+						debug("WYGRA£EM z %d", przeciwnik);
+						changeState(REST, "REST");
+						returnEverything();
+						
+						sleep(WINNER_TIME);
+
+					}
+					else {
+						debug("PRZEGRA£EM z %d", przeciwnik);
+						changeState(REST, "REST");
+						returnEverything();
+					}
+				}
+
+
+			}
         }
         sleep(SEC_IN_STATE);
     }
+}
+void returnEverything() {
+	if (pickedZasob == 0) {
+		returnMiska();
+	}
+	else if (pickedZasob == 1) {
+		returnPinezki();
+	}
+	else if (pickedZasob == 2) {
+		returnSlipki();
+	}
+	if (rezerwujacy) {
+		returnSale();
+	}
+	enemyReady = FALSE;
+}
+void returnMiska() {
+	for (int i = 0; i < countQueueZasobSize;i++) {
+		packet_t* pkt = malloc(sizeof(packet_t));
+		pkt->data = queue_zasob.data[i].priority;
+		sendPacket(pkt, queue_zasob.data[i].process, ACK_MISKA);
+		queue_zasob.data[i].process = -1;
+		queue_zasob.data[i].priority = -1;
+	}
+	countQueueZasobSize = 0;
+}
+void returnPinezki(){
+	for (int i = 0; i < countQueueZasobSize; i++) {
+		packet_t* pkt = malloc(sizeof(packet_t));
+		pkt->data = queue_zasob.data[i].priority;
+		sendPacket(pkt, queue_zasob.data[i].process, ACK_PINEZKI);
+		queue_zasob.data[i].process = -1;
+		queue_zasob.data[i].priority = -1;
+	}
+	countQueueZasobSize = 0;
+	}
+void returnSlipki() {
+	for (int i = 0; i < countQueueZasobSize; i++) {
+		packet_t* pkt = malloc(sizeof(packet_t));
+		pkt->data = queue_zasob.data[i].priority;
+		sendPacket(pkt, queue_zasob.data[i].process, ACK_SLIPKI);
+		queue_zasob.data[i].process = -1;
+		queue_zasob.data[i].priority = -1;
+	}
+	countQueueZasobSize = 0;
+}
+void returnSale() {
+	for (int i = 0; i < countQueueSalaSize; i++) {
+		packet_t* pkt = malloc(sizeof(packet_t));
+		pkt->data = queue_sala.data[i].priority;
+		sendPacket(pkt, queue_sala.data[i].process, ACK_SALA);
+		queue_sala.data[i].process = -1;
+		queue_sala.data[i].priority = -1;
+	}
+	countQueueSalaSize = 0;
+	rezerwujacy = FALSE;
+	
+}
+int getResult() {
+	if (pickedZasob == enemyPickedZasob) {
+		if (przeciwnik > rank) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+	if (pickedZasob == 0 && enemyPickedZasob == 2)
+		return TRUE;
+	if (pickedZasob == 1 && enemyPickedZasob == 0)
+		return TRUE;
+	if (pickedZasob == 2 && enemyPickedZasob == 1)
+		return TRUE;
+	return FALSE;
 }

@@ -88,10 +88,11 @@ void *startKomWatek(void *ptr)
 
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
-			if ((stan == START_ZASOB && rezerwujacy) ||
+			if (((stan == START_ZASOB ||stan == START_DEBATE) && rezerwujacy) ||
 				(stan == START_SALA && pakiet.data > ackSPriority) ||
 				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
 			{
+				countQueueSalaSize++;
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
 				insertElem(&queue, elem);
@@ -136,7 +137,8 @@ void *startKomWatek(void *ptr)
 		case REQ_MISKA:
 			debug("Otrzymałem REQ_MISKA od %d prio %d", pakiet.src, pakiet.data);
 			
-			if (pickedZasob == 0 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+			if (pickedZasob == 0 && (stan == START_DEBATE || (stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+				countQueueZasobSize++;
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
 				insertElem(&queue_zasob, elem);
@@ -155,6 +157,7 @@ void *startKomWatek(void *ptr)
 			debug("Otrzymałem REQ_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
 
 			if (pickedZasob == 1 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+				countQueueZasobSize++;
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
 				insertElem(&queue_zasob, elem);
@@ -174,6 +177,7 @@ void *startKomWatek(void *ptr)
 			debug("Otrzymałem REQ_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
 
 			if (pickedZasob == 2 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+				countQueueZasobSize++;
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
 				insertElem(&queue_zasob, elem);
@@ -194,8 +198,10 @@ void *startKomWatek(void *ptr)
 				ackCountZasob++;
 				if (ackCountZasob >= size - MISKA) {
 					ackCountZasob = 0;
+					
 					changeState(START_DEBATE, "START_DEBATE");
 					sendPacket(0, przeciwnik, READY);
+					
 				}
 			}
 			break;
@@ -206,8 +212,10 @@ void *startKomWatek(void *ptr)
 				ackCountZasob++;
 				if (ackCountZasob >= size - PINEZKI) {
 					ackCountZasob = 0;
+					
 					changeState(START_DEBATE, "START_DEBATE");
 					sendPacket(0, przeciwnik, READY);
+					
 				}
 			}
 			break;
@@ -219,15 +227,18 @@ void *startKomWatek(void *ptr)
 				ackCountZasob++;
 				if (ackCountZasob >= size - SLIPKI) {
 					ackCountZasob = 0;
+					
 					changeState(START_DEBATE, "START_DEBATE");
 					sendPacket(0, przeciwnik, READY);
+					
 				}
 			}
 			break;
 
 		case READY:
 			debug("Otrzymałem READY od %d prio %d", pakiet.src, pakiet.data);
-
+			enemyReady = TRUE;
+			
 			break;
 
 	    default:
@@ -277,7 +288,7 @@ void getZasob() {
 		}
 	}
 
-
+	
 
 
 }

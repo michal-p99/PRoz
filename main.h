@@ -16,7 +16,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define LOSER_TIME 5
+#define WINNER_TIME 5
 
 #define SLIPKI 3
 #define MISKA 3
@@ -26,18 +26,20 @@
 /* używane w wątku głównym, determinuje jak często i na jak długo zmieniają się stany */
 #define STATE_CHANGE_PROB 50
 #define SEC_IN_STATE 2
+#define DEBATE_TIME 10
 
 #define ROOT 0
 
 /* stany procesu */
-typedef enum {REST,  PAIRING,START_SALA,CZEKAJ_SALA,START_ZASOB, START_DEBATE, InFinish} state_t;
+typedef enum {REST,  PAIRING,START_SALA,CZEKAJ_SALA,START_ZASOB, START_DEBATE,WAIT_READY, InFinish} state_t;
 extern state_t stan;
 extern int rank;
 extern int size;
 extern int lamport;
 extern pthread_mutex_t stateMut;
 extern pthread_mutex_t lamportMut;
-
+extern int countQueueZasobSize;
+extern int countQueueSalaSize;
 extern int ackSPriority;
 extern int ackZPriority;
 extern int przeciwnik;
@@ -49,6 +51,7 @@ extern int ackCountSala;
 extern int pickedZasob;
 extern int rezerwujacy;
 extern int enemyPickedZasob;
+extern int enemyReady;
 /* to może przeniesiemy do global... */
 typedef struct {
     int ts;       /* timestamp (zegar lamporta */
@@ -73,6 +76,7 @@ extern MPI_Datatype MPI_PAKIET_T;
 #define PAIR 11
 #define READY 12
 #define JEST_SALA 13
+#define RESULT 14;
 
 /* macro debug - działa jak printf, kiedy zdefiniowano
    DEBUG, kiedy DEBUG niezdefiniowane działa jak instrukcja pusta 
