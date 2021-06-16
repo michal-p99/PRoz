@@ -20,7 +20,7 @@ void *startKomWatek(void *ptr)
 		case REQ_I:
 			debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.ts);
 			q_element_t elem;
-			elem.priority = pakiet.ts - rank;
+			elem.priority = pakiet.ts;
 			elem.process = pakiet.src;
 			insertElem(&queue, elem);
 			if (size >= 4)
