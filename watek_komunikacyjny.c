@@ -78,6 +78,7 @@ void *startKomWatek(void *ptr)
 			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 			if (pakiet.data == rank) {
 				debug("Moim przeciwnikiem jest %d ", pakiet.src);
+				przeciwnik = pakiet.src;
 				changeState(CZEKAJ_SALA, "CZEKAJ_SALA");
 			}
 
