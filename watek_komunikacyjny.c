@@ -42,7 +42,7 @@ void *startKomWatek(void *ptr)
 					for (int i = 0; i < size; i++) {
 						if (i != rank) {
 							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt.ts = zegar;
+							pkt->ts = zegar;
 							pkt->data = queue.data[myPos - 1].process;
 							sendPacketR(pkt, i, PAIR);
 						}

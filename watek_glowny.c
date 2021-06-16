@@ -15,7 +15,7 @@ void mainLoop()
 				for (int i = 0; i < size; i++) {
 					if (i != rank) {
 						packet_t* pkt = malloc(sizeof(packet_t));
-						pkt.ts = prio;
+						pkt->ts = prio;
 
 						sendPacketR(pkt, i, REQ_I);
 					}
