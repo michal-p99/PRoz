@@ -41,10 +41,10 @@ void *startKomWatek(void *ptr)
 					int zegar = lamport;
 					for (int i = 0; i < size; i++) {
 						if (i != rank) {
-							packet_t pakiet;
-							pakiet.ts = zegar;
-							pakiet.data = queue.data[myPos - 1].process;
-							sendPacketR(&pakiet, i, PAIR);
+							packet_t* pkt = malloc(sizeof(packet_t));
+							pkt.ts = zegar;
+							pkt->data = queue.data[myPos - 1].process;
+							sendPacketR(pkt, i, PAIR);
 						}
 					}
 					removeProcess(&queue, queue.data[myPos].process);

@@ -14,10 +14,10 @@ void mainLoop()
 				int prio = lamport;
 				for (int i = 0; i < size; i++) {
 					if (i != rank) {
-						packet_t pakiet;
-						pakiet.ts = prio;
+						packet_t* pkt = malloc(sizeof(packet_t));
+						pkt.ts = prio;
 
-						sendPacketR(&pakiet, i, REQ_I);
+						sendPacketR(pkt, i, REQ_I);
 					}
 				}
 				q_element_t elem;
