@@ -60,7 +60,7 @@ void *startKomWatek(void *ptr)
 						if (i != rank)
 						{
 							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt->data = lamport;
+							pkt->data = ackSPriority;
 							sendPacket(pkt, i, REQ_SALA);
 						}
 					}
