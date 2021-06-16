@@ -113,6 +113,7 @@ void returnSale() {
 	
 }
 int getResult() {
+	debug("Moje %d   enemy %d", pickedZasob, enemyPickedZasob);
 	if (pickedZasob == enemyPickedZasob) {
 		if (przeciwnik > rank) {
 			return TRUE;
