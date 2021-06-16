@@ -98,7 +98,7 @@ void *startKomWatek(void *ptr)
 				packet_t* pkt = malloc(sizeof(packet_t));
 				pkt->ts = pakiet.ts;
 				debug("pakiet ts %d", pakiet.ts);
-				sendPacket(pkt, pakiet.src, ACK_SALA);
+				sendPacketR(pkt, pakiet.src, ACK_SALA);
 			}
 
 
