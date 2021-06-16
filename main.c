@@ -129,7 +129,15 @@ void sendPacket(packet_t *pkt, int destination, int tag)
     MPI_Send( pkt, 1, MPI_PAKIET_T, destination, tag, MPI_COMM_WORLD);
     if (freepkt) free(pkt);
 }
-
+void sendPacketR(packet_t* pkt, int destination, int tag)
+{
+	int freepkt = 0;
+	if (pkt == 0) { pkt = malloc(sizeof(packet_t)); freepkt = 1; }
+	pkt->src = rank;
+	pkt->ts = lamport;
+	MPI_Send(pkt, 1, MPI_PAKIET_T, destination, tag, MPI_COMM_WORLD);
+	if (freepkt) free(pkt);
+}
 
 void changeState( state_t newState,const char* nazwa )
 {

@@ -110,5 +110,6 @@ extern int lamport;
 
 /* wysyłanie pakietu, skrót: wskaźnik do pakietu (0 oznacza stwórz pusty pakiet), do kogo, z jakim typem */
 void sendPacket(packet_t *pkt, int destination, int tag);
+void sendPacketR(packet_t* pkt, int destination, int tag);
 void changeState( state_t ,const char* name);
 #endif

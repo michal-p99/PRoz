@@ -17,7 +17,7 @@ void mainLoop()
 						packet_t pakiet;
 						pakiet.ts = prio;
 
-						sendPacket(&pakiet, i, REQ_I);
+						sendPacketR(&pakiet, i, REQ_I);
 					}
 				}
 				q_element_t elem;

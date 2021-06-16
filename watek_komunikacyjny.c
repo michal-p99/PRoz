@@ -43,7 +43,7 @@ void *startKomWatek(void *ptr)
 						packet_t pakiet;
 						pakiet.ts = zegar;
 						pakiet.data = queue.data[myPos - 1].process;
-						sendPacket(&pakiet, i, PAIR);
+						sendPacketR(&pakiet, i, PAIR);
 					}
 				}
 				removeProcess(&queue, queue.data[myPos].process);
