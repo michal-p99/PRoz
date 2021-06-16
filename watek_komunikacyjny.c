@@ -54,6 +54,7 @@ void *startKomWatek(void *ptr)
 
 					ackCountSala = 0;
 					ackSPriority = zegar;
+					rezerwujacy = TRUE;
 					debug("priority sala %d", ackSPriority);
 					for (int i = 0; i < size; i++)
 					{
@@ -87,8 +88,8 @@ void *startKomWatek(void *ptr)
 
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
-			if ((stan == START_ZASOB ||
-				stan == START_SALA && pakiet.data > ackSPriority) ||
+			if ((stan == START_ZASOB && rezerwujacy) ||
+				(stan == START_SALA && pakiet.data > ackSPriority) ||
 				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
 			{
 				elem.priority = pakiet.data;
@@ -134,12 +135,38 @@ void *startKomWatek(void *ptr)
 
 		case REQ_MISKA:
 			debug("Otrzymałem REQ_MISKA od %d prio %d", pakiet.src, pakiet.data);
-
+			q_element_t elem;
+			if (pickedZasob == 0 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+				elem.priority = pakiet.data;
+				elem.process = pakiet.src;
+				insertElem(&queue_zasob, elem);
+			}
+			else {
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = pakiet.data;
+				sendPacket(pkt, pakiet.src, ACK_MISKA);
+			}
+			if (pakiet.src == przeciwnik)
+				enemyPickedZasob = 0;
 			break;
 
 
 		case REQ_PINEZKI:
 			debug("Otrzymałem REQ_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
+
+			q_element_t elem;
+			if (pickedZasob == 1 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+				elem.priority = pakiet.data;
+				elem.process = pakiet.src;
+				insertElem(&queue_zasob, elem);
+			}
+			else {
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = pakiet.data;
+				sendPacket(pkt, pakiet.src, ACK_PINEZKI);
+			}
+			if (pakiet.src == przeciwnik)
+				enemyPickedZasob = 1;
 
 			break;
 
@@ -147,6 +174,61 @@ void *startKomWatek(void *ptr)
 		case REQ_SLIPKI:
 			debug("Otrzymałem REQ_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
 
+			q_element_t elem;
+			if (pickedZasob == 2 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
+				elem.priority = pakiet.data;
+				elem.process = pakiet.src;
+				insertElem(&queue_zasob, elem);
+			}
+			else {
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = pakiet.data;
+				sendPacket(pkt, pakiet.src, ACK_SLIPKI);
+			}
+			if (pakiet.src == przeciwnik)
+				enemyPickedZasob = 2;
+
+			break;
+
+		case ACK_MISKA:
+			debug("Otrzymałem ACK_MISKA od %d prio %d", pakiet.src, pakiet.data);
+			if (stan = START_ZASOB && pickedZasob == 0 && pakiet.data == ackZPriority) {
+				ackCountZasob++;
+				if (ackCountZasob >= size - MISKA) {
+					ackCountZasob = 0;
+					changeState(START_DEBATE, "START_DEBATE");
+					sendPacket(0, przeciwnik, READY);
+				}
+			}
+			break;
+
+		case ACK_PINEZKI:
+			debug("Otrzymałem ACK_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
+			if (stan = START_ZASOB && pickedZasob == 1 && pakiet.data == ackZPriority) {
+				ackCountZasob++;
+				if (ackCountZasob >= size - PINEZKI) {
+					ackCountZasob = 0;
+					changeState(START_DEBATE, "START_DEBATE");
+					sendPacket(0, przeciwnik, READY);
+				}
+			}
+			break;
+
+
+		case ACK_SLIPKI:
+			debug("Otrzymałem ACK_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
+			if (stan = START_ZASOB && pickedZasob == 2 && pakiet.data == ackZPriority) {
+				ackCountZasob++;
+				if (ackCountZasob >= size - SLIPKI) {
+					ackCountZasob = 0;
+					changeState(START_DEBATE, "START_DEBATE");
+					sendPacket(0, przeciwnik, READY);
+				}
+			}
+			break;
+
+		case READY:
+			debug("Otrzymałem READY od %d prio %d", pakiet.src, pakiet.data);
 
 			break;
 

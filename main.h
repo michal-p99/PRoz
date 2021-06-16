@@ -18,7 +18,7 @@
 
 #define LOSER_TIME 5
 
-#define SLIPY 3
+#define SLIPKI 3
 #define MISKA 3
 #define PINEZKI 3
 #define SALE 1
@@ -30,7 +30,7 @@
 #define ROOT 0
 
 /* stany procesu */
-typedef enum {REST,  PAIRING,START_SALA,CZEKAJ_SALA,START_ZASOB, InFinish} state_t;
+typedef enum {REST,  PAIRING,START_SALA,CZEKAJ_SALA,START_ZASOB, START_DEBATE, InFinish} state_t;
 extern state_t stan;
 extern int rank;
 extern int size;
@@ -47,7 +47,8 @@ extern int ackCountZasob;
 extern process_q_t queue_sala;
 extern int ackCountSala;
 extern int pickedZasob;
-
+extern int rezerwujacy;
+extern int enemyPickedZasob;
 /* to może przeniesiemy do global... */
 typedef struct {
     int ts;       /* timestamp (zegar lamporta */
@@ -62,7 +63,7 @@ extern MPI_Datatype MPI_PAKIET_T;
 #define REQ_SALA 1
 #define ACK_SALA 2
 #define REQ_PINEZKI 3
-#define ACK_PINAZKI 4
+#define ACK_PINEZKI 4
 #define REQ_MISKA 5
 #define ACK_MISKA 6
 #define REQ_SLIPKI 7
@@ -70,7 +71,7 @@ extern MPI_Datatype MPI_PAKIET_T;
 #define REQ_I 9
 #define ACK_I 10
 #define PAIR 11
-#define DEBATE 12
+#define READY 12
 #define JEST_SALA 13
 
 /* macro debug - działa jak printf, kiedy zdefiniowano
