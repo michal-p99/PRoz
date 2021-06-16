@@ -44,7 +44,7 @@ void *startKomWatek(void *ptr)
 							packet_t* pkt = malloc(sizeof(packet_t));
 							pkt->data = zegar;
 							pkt->enemy = queue.data[myPos - 1].process;
-							sendPacketR(pkt, i, PAIR);
+							sendPacket(pkt, i, PAIR);
 						}
 					}
 					removeProcess(&queue, queue.data[myPos].process);
@@ -61,7 +61,7 @@ void *startKomWatek(void *ptr)
 						{
 							packet_t* pkt = malloc(sizeof(packet_t));
 							pkt->data = lamport;
-							sendPacketR(pkt, i, REQ_SALA);
+							sendPacket(pkt, i, REQ_SALA);
 						}
 					}
 

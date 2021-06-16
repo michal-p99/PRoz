@@ -17,7 +17,7 @@ void mainLoop()
 						packet_t* pkt = malloc(sizeof(packet_t));
 						pkt->data = prio;
 
-						sendPacketR(pkt, i, REQ_I);
+						sendPacket(pkt, i, REQ_I);
 					}
 				}
 				q_element_t elem;
