@@ -21,7 +21,7 @@ void mainLoop()
 					}
 				}
 				q_element_t elem;
-				elem.priority = prio;
+				elem.priority = prio - rank;
 				debug("lamport %d",prio)
 				elem.process = rank;
 				insertElem(&queue, elem);
