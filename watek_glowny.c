@@ -76,6 +76,7 @@ void returnMiska() {
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_MISKA);
 		queue_zasob.data[i].process = -1;
 		queue_zasob.data[i].priority = -1;
+		queue_zasob.size--;
 	}
 	countQueueZasobSize = 0;
 }
@@ -86,6 +87,7 @@ void returnPinezki(){
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_PINEZKI);
 		queue_zasob.data[i].process = -1;
 		queue_zasob.data[i].priority = -1;
+		queue_zasob.size--;
 	}
 	countQueueZasobSize = 0;
 	}
@@ -96,6 +98,7 @@ void returnSlipki() {
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_SLIPKI);
 		queue_zasob.data[i].process = -1;
 		queue_zasob.data[i].priority = -1;
+		queue_zasob.size--;
 	}
 	countQueueZasobSize = 0;
 }
@@ -106,6 +109,7 @@ void returnSale() {
 		sendPacket(pkt, queue_sala.data[i].process, ACK_SALA);
 		queue_sala.data[i].process = -1;
 		queue_sala.data[i].priority = -1;
+		queue_sala.size--;
 	}
 	countQueueSalaSize = 0;
 	rezerwujacy = FALSE;
