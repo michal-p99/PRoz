@@ -16,8 +16,8 @@ MPI_Datatype MPI_PAKIET_T;
 pthread_t threadKom;
 pthread_mutex_t lamportMut = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t stateMut = PTHREAD_MUTEX_INITIALIZER;
-int lamport,ackCountS, ackSPriority,przeciwnik;
-process_q_t queue;
+int lamport,ackCountSala, ackSPriority,przeciwnik;
+process_q_t queue,queue_zasob,queue_sala;
 void check_thread_support(int provided)
 {
     printf("THREAD SUPPORT: chcemy %d. Co otrzymamy?\n", provided);
@@ -95,6 +95,8 @@ void inicjuj(int *argc, char ***argv)
     srand(rank);
 
 	initQueue(&queue, size);
+	initQueue(&queue_sala, size);
+	initQueue(&queue_zasob, size);
     pthread_create( &threadKom, NULL, startKomWatek , 0);
     
     debug("Zainicjalizowany");

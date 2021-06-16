@@ -30,18 +30,21 @@
 #define ROOT 0
 
 /* stany procesu */
-typedef enum {REST,  PAIRING,START_SALA,START_ZASOB, InFinish} state_t;
+typedef enum {REST,  PAIRING,START_SALA,CZEKAJ_SALA,START_ZASOB, InFinish} state_t;
 extern state_t stan;
 extern int rank;
 extern int size;
 extern int lamport;
 extern pthread_mutex_t stateMut;
 extern pthread_mutex_t lamportMut;
-extern int ackCountS;
+
 extern int ackSPriority;
 extern int przeciwnik;
 extern process_q_t queue;
-
+extern process_q_t queue_zasob;
+extern int ackCounterZasob;
+extern process_q_t queue_sala;
+extern int ackCounterSala;
 
 /* to może przeniesiemy do global... */
 typedef struct {
@@ -65,6 +68,7 @@ extern MPI_Datatype MPI_PAKIET_T;
 #define ACK_I 10
 #define PAIR 11
 #define DEBATE 12
+#define JEST_SALA 13
 
 /* macro debug - działa jak printf, kiedy zdefiniowano
    DEBUG, kiedy DEBUG niezdefiniowane działa jak instrukcja pusta 

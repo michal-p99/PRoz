@@ -31,28 +31,44 @@ void *startKomWatek(void *ptr)
 
         case ACK_I:
 			debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.ts);
-			int myPos = findPosition(&queue, rank);
-			if (myPos % 2 == 1){
-				przeciwnik = queue.data[myPos - 1].process;
-				debug("Moim przeciwnikiem jest %d", przeciwnik);
-				changeState(START_SALA, "START_SALA");
-				
-				int zegar = lamport;
-				for (int i = 0; i < size; i++) {
-					if (i != rank) {
-						packet_t pakiet;
-						pakiet.ts = zegar;
-						pakiet.data = queue.data[myPos - 1].process;
-						sendPacketR(&pakiet, i, PAIR);
+			if (stan == PAIRING) {
+				int myPos = findPosition(&queue, rank);
+				if (myPos % 2 == 1) {
+					przeciwnik = queue.data[myPos - 1].process;
+					debug("Moim przeciwnikiem jest %d", przeciwnik);
+					changeState(START_SALA, "START_SALA");
+
+					int zegar = lamport;
+					for (int i = 0; i < size; i++) {
+						if (i != rank) {
+							packet_t pakiet;
+							pakiet.ts = zegar;
+							pakiet.data = queue.data[myPos - 1].process;
+							sendPacketR(&pakiet, i, PAIR);
+						}
 					}
+					removeProcess(&queue, queue.data[myPos].process);
+					removeProcess(&queue, queue.data[myPos - 1].process);
+					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+
+
+					ackCounterS = 0;
+					int zegar = lamport;
+					ackSPriority = zegar;
+					for (int i = 0; i < size; i++)
+					{
+						if (i != rank)
+						{
+							packet_t* pkt = malloc(sizeof(packet_t));
+							pkt->ts = zegar;
+							sendPacketR(pkt, i, REQ_SALA);
+						}
+					}
+
+
+
 				}
-				removeProcess(&queue, queue.data[myPos].process);
-				removeProcess(&queue, queue.data[myPos - 1].process);
-				debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
-
-
 			}
-
             break;
 
 		case PAIR:
@@ -62,11 +78,55 @@ void *startKomWatek(void *ptr)
 			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 			if (pakiet.data == rank) {
 				debug("Moim przeciwnikiem jest %d ", pakiet.src);
-				changeState(START_ZASOB, "START_ZASOB");
+				changeState(START_ZASOB, "CZEKAJ_SALA");
 			}
 
 
 			break;
+
+		case REQ_SALA:
+			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
+			queue_element_t elem;
+			if ((stan == START_SALA && pakiet.data > ackSPriority) ||
+				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
+			{
+				elem.priority = pakiet.data;
+				elem.process = pakiet.src;
+				insertElem(&queue, elem);
+			}
+			else
+			{
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = pakiet.data;
+				sendPacket(pkt, pakiet.src, ACK_SALA);
+			}
+
+
+
+			break;
+		case ACK_SALA:
+			debug("Otrzymałem ACKSALA od %d", pakiet.src);
+			if (stan == START_SALA && pakiet.data == ackSPriority)
+			{
+				ackCounterSala++;
+				if (ackCounterS == size - SALE)
+				{
+					ackCounterSala = 0;
+					sendPacket(0, przeciwnik, JEST_SALA);
+					changeState(START_ZASOB, "STAT_ZASOB");
+				}
+			}
+
+			break;
+
+		case JEST_SALA:
+			if (stan == CZEKAJ_SALA) {
+				debug("Przeciwnik %d wynajął salę", przeciwnik);
+				changeState(START_ZASOB, "STAT_ZASOB");
+			}
+
+
+			break
 
 	    default:
 	    break;
