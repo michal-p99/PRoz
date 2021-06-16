@@ -52,7 +52,7 @@ void *startKomWatek(void *ptr)
 					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 
-					ackCounterSala = 0;
+					ackCountSala = 0;
 					ackSPriority = zegar;
 					for (int i = 0; i < size; i++)
 					{
@@ -106,10 +106,10 @@ void *startKomWatek(void *ptr)
 			debug("Otrzymałem ACKSALA od %d", pakiet.src);
 			if (stan == START_SALA && pakiet.data == ackSPriority)
 			{
-				ackCounterSala++;
-				if (ackCounterSala == size - SALE)
+				ackCountSala++;
+				if (ackCountSala == size - SALE)
 				{
-					ackCounterSala = 0;
+					ackCountSala = 0;
 					sendPacket(0, przeciwnik, JEST_SALA);
 					changeState(START_ZASOB, "STAT_ZASOB");
 				}
