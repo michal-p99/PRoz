@@ -34,7 +34,8 @@ void mainLoop()
 				if (enemyReady) {
 					debug("DEBATA ROZPOCZÊTA z %d", przeciwnik);
 					sleep(DEBATE_TIME);
-					if (getResult) {
+					debug("Moje %d   enemy %d", pickedZasob, enemyPickedZasob);
+					if (getResult()) {
 						debug("WYGRA£EM z %d", przeciwnik);
 						changeState(REST, "REST");
 						returnEverything();
