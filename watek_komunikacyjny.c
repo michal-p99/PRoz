@@ -54,6 +54,7 @@ void *startKomWatek(void *ptr)
 
 					ackCountSala = 0;
 					ackSPriority = zegar;
+					debug("priority sala %d", ackSPriority);
 					for (int i = 0; i < size; i++)
 					{
 						if (i != rank)
@@ -104,7 +105,7 @@ void *startKomWatek(void *ptr)
 
 			break;
 		case ACK_SALA:
-			debug("Otrzymałem ACKSALA od %d", pakiet.src);
+			debug("Otrzymałem ACKSALA od %d prio %d", pakiet.src,pakiet.ts);
 			if (stan == START_SALA && pakiet.ts == ackSPriority)
 			{
 				ackCountSala++;
