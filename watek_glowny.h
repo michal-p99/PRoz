@@ -8,4 +8,5 @@ void returnMiska();
 void returnSale();
 void returnPinezki();
 void returnSlipki();
+void returnEverything();
 #endif
