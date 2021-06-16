@@ -30,7 +30,7 @@ void *startKomWatek(void *ptr)
 			break;
 
         case ACK_I:
-			debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.ts);
+			debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.data);
 			if (stan == PAIRING) {
 				int myPos = findPosition(&queue, rank);
 				if (myPos % 2 == 1) {
@@ -98,7 +98,7 @@ void *startKomWatek(void *ptr)
 			{
 				packet_t* pkt = malloc(sizeof(packet_t));
 				pkt->data = pakiet.data;
-				debug("pakiet ts %d", pakiet.ts);
+				debug("pakiet ts %d", pakiet.data);
 				sendPacket(pkt, pakiet.src, ACK_SALA);
 			}
 
