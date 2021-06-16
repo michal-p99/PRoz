@@ -52,15 +52,14 @@ void *startKomWatek(void *ptr)
 					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 
-					ackCounterS = 0;
-					int zegar = lamport;
+					ackCounterSala = 0;
 					ackSPriority = zegar;
 					for (int i = 0; i < size; i++)
 					{
 						if (i != rank)
 						{
 							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt->ts = zegar;
+							pkt->ts = lamport;
 							sendPacketR(pkt, i, REQ_SALA);
 						}
 					}
@@ -86,7 +85,7 @@ void *startKomWatek(void *ptr)
 
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
-			queue_element_t elem;
+			q_element_t elem;
 			if ((stan == START_SALA && pakiet.data > ackSPriority) ||
 				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
 			{
