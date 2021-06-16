@@ -95,7 +95,7 @@ void *startKomWatek(void *ptr)
 				countQueueSalaSize++;
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
-				insertElem(&queue, elem);
+				insertElem(&queue_sala, elem);
 			}
 			else
 			{
