@@ -39,12 +39,14 @@ extern pthread_mutex_t stateMut;
 extern pthread_mutex_t lamportMut;
 
 extern int ackSPriority;
+extern int ackZPriority;
 extern int przeciwnik;
 extern process_q_t queue;
 extern process_q_t queue_zasob;
 extern int ackCountZasob;
 extern process_q_t queue_sala;
 extern int ackCountSala;
+extern int pickedZasob;
 
 /* to może przeniesiemy do global... */
 typedef struct {
@@ -59,8 +61,8 @@ extern MPI_Datatype MPI_PAKIET_T;
 /* Typy wiadomości */
 #define REQ_SALA 1
 #define ACK_SALA 2
-#define REQ_PINEZKA 3
-#define ACK_PINAZKA 4
+#define REQ_PINEZKI 3
+#define ACK_PINAZKI 4
 #define REQ_MISKA 5
 #define ACK_MISKA 6
 #define REQ_SLIPKI 7

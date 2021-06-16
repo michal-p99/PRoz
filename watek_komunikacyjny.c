@@ -115,7 +115,8 @@ void *startKomWatek(void *ptr)
 				{
 					ackCountSala = 0;
 					sendPacket(0, przeciwnik, JEST_SALA);
-					changeState(START_ZASOB, "STAT_ZASOB");
+					changeState(START_ZASOB, "START_ZASOB");
+					getZasob();
 				}
 			}
 
@@ -124,8 +125,27 @@ void *startKomWatek(void *ptr)
 		case JEST_SALA:
 			if (stan == CZEKAJ_SALA) {
 				debug("Przeciwnik %d wynajął salę", przeciwnik);
-				changeState(START_ZASOB, "STAT_ZASOB");
+				changeState(START_ZASOB, "START_ZASOB");
+				getZasob();
 			}
+
+
+			break;
+
+		case REQ_MISKA:
+			debug("Otrzymałem REQ_MISKA od %d prio %d", pakiet.src, pakiet.data);
+
+			break;
+
+
+		case REQ_PINEZKI:
+			debug("Otrzymałem REQ_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
+
+			break;
+
+
+		case REQ_SLIPKI:
+			debug("Otrzymałem REQ_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
 
 
 			break;
@@ -134,4 +154,50 @@ void *startKomWatek(void *ptr)
 	    break;
         }
     }
+}
+
+void getZasob() {
+	pickedZasob = rand() % 3;
+	ackZPriority = lamport;
+	if (pickedZasob == 0) {
+		debug("Wybieram MISKĘ");
+		
+		for (int i = 0; i < size; i++)
+		{
+			if (i != rank)
+			{
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = ackZPriority;
+				sendPacket(pkt, i, REQ_MISKA);
+			}
+		}
+	}
+	else if (pickedZasob == 1) {
+		debug("Wybieram PINEZKI");
+		for (int i = 0; i < size; i++)
+		{
+			if (i != rank)
+			{
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = ackZPriority;
+				sendPacket(pkt, i, REQ_PINEZKI);
+			}
+		}
+	}
+	else if (pickedZasob == 2) {
+		debug("Wybieram SLIPKI");
+		for (int i = 0; i < size; i++)
+		{
+			if (i != rank)
+			{
+				packet_t* pkt = malloc(sizeof(packet_t));
+				pkt->data = ackZPriority;
+				sendPacket(pkt, i, REQ_SLIPKI);
+			}
+		}
+	}
+
+
+
+
 }

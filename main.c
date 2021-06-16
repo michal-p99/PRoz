@@ -16,7 +16,7 @@ MPI_Datatype MPI_PAKIET_T;
 pthread_t threadKom;
 pthread_mutex_t lamportMut = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t stateMut = PTHREAD_MUTEX_INITIALIZER;
-int lamport,ackCountSala, ackSPriority,przeciwnik;
+int lamport, ackCountSala, ackSPriority, przeciwnik, pickedZasob, ackZPriority;
 process_q_t queue,queue_zasob,queue_sala;
 void check_thread_support(int provided)
 {
