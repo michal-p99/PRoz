@@ -21,7 +21,7 @@
 #define SLIPY 3
 #define MISKA 3
 #define PINEZKI 3
-#define SALE 3
+#define SALE 1
 
 /* używane w wątku głównym, determinuje jak często i na jak długo zmieniają się stany */
 #define STATE_CHANGE_PROB 50
