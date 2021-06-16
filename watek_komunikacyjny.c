@@ -18,9 +18,9 @@ void *startKomWatek(void *ptr)
         switch ( status.MPI_TAG ) {
 
 		case REQ_I:
-			debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.ts);
+			debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.data);
 			q_element_t elem;
-			elem.priority = pakiet.ts;
+			elem.priority = pakiet.data;
 			elem.process = pakiet.src;
 			insertElem(&queue, elem);
 			if (size >= 4)
@@ -42,8 +42,8 @@ void *startKomWatek(void *ptr)
 					for (int i = 0; i < size; i++) {
 						if (i != rank) {
 							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt->ts = zegar;
-							pkt->data = queue.data[myPos - 1].process;
+							pkt->data = zegar;
+							pkt->enemy = queue.data[myPos - 1].process;
 							sendPacketR(pkt, i, PAIR);
 						}
 					}
@@ -60,7 +60,7 @@ void *startKomWatek(void *ptr)
 						if (i != rank)
 						{
 							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt->ts = lamport;
+							pkt->data = lamport;
 							sendPacketR(pkt, i, REQ_SALA);
 						}
 					}
@@ -72,9 +72,9 @@ void *startKomWatek(void *ptr)
             break;
 
 		case PAIR:
-			debug("Dostałem wiadomość PAIR od %d z %d ts %d", pakiet.src,pakiet.data,pakiet.ts);
+			debug("Dostałem wiadomość PAIR od %d z %d ts %d", pakiet.src,pakiet.enemy,pakiet.data);
 			removeProcess(&queue, pakiet.src);
-			removeProcess(&queue, pakiet.data);
+			removeProcess(&queue, pakiet.enemy);
 			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 			if (pakiet.data == rank) {
 				debug("Moim przeciwnikiem jest %d ", pakiet.src);
@@ -87,17 +87,17 @@ void *startKomWatek(void *ptr)
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
 			if ((stan == START_ZASOB ||
-				stan == START_SALA && pakiet.ts > ackSPriority) ||
-				(stan == START_SALA && pakiet.ts == ackSPriority) && rank < pakiet.src)
+				stan == START_SALA && pakiet.data > ackSPriority) ||
+				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
 			{
-				elem.priority = pakiet.ts;
+				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
 				insertElem(&queue, elem);
 			}
 			else
 			{
 				packet_t* pkt = malloc(sizeof(packet_t));
-				pkt->ts = pakiet.ts;
+				pkt->ts = pakiet.data;
 				debug("pakiet ts %d", pakiet.ts);
 				sendPacketR(pkt, pakiet.src, ACK_SALA);
 			}
@@ -106,8 +106,8 @@ void *startKomWatek(void *ptr)
 
 			break;
 		case ACK_SALA:
-			debug("Otrzymałem ACKSALA od %d prio %d", pakiet.src,pakiet.ts);
-			if (stan == START_SALA && pakiet.ts == ackSPriority)
+			debug("Otrzymałem ACKSALA od %d prio %d", pakiet.src,pakiet.data);
+			if (stan == START_SALA && pakiet.data == ackSPriority)
 			{
 				ackCountSala++;
 				if (ackCountSala == size - SALE)

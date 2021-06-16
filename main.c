@@ -78,14 +78,15 @@ void inicjuj(int *argc, char ***argv)
        brzydzimy się czymś w rodzaju MPI_Send(&typ, sizeof(pakiet_t), MPI_BYTE....
     */
     /* sklejone z stackoverflow */
-    const int nitems=3; /* bo packet_t ma trzy pola */
-    int       blocklengths[3] = {1,1,1};
-    MPI_Datatype typy[3] = {MPI_INT, MPI_INT, MPI_INT};
+    const int nitems=4; /* bo packet_t ma trzy pola */
+    int       blocklengths[4] = {1,1,1,1};
+    MPI_Datatype typy[4] = {MPI_INT, MPI_INT, MPI_INT,MPI_INT};
 
-    MPI_Aint     offsets[3]; 
+    MPI_Aint     offsets[4]; 
     offsets[0] = offsetof(packet_t, ts);
     offsets[1] = offsetof(packet_t, src);
     offsets[2] = offsetof(packet_t, data);
+	offsets[3] = offsetof(packet_t, enemy);
 
     MPI_Type_create_struct(nitems, blocklengths, offsets, typy, &MPI_PAKIET_T);
     MPI_Type_commit(&MPI_PAKIET_T);
@@ -136,10 +137,10 @@ void sendPacketR(packet_t* pkt, int destination, int tag)
 	int freepkt = 0;
 	if (pkt == 0) { 
 		pkt = malloc(sizeof(packet_t)); freepkt = 1;
-		pkt->ts = lamport;
+		
 	}
 	pkt->src = rank;
-	
+	pkt->ts = lamport;
 	MPI_Send(pkt, 1, MPI_PAKIET_T, destination, tag, MPI_COMM_WORLD);
 	if (freepkt) free(pkt);
 }
