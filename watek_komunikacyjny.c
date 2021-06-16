@@ -150,6 +150,7 @@ void *startKomWatek(void *ptr)
 			}
 			if (pakiet.src == przeciwnik)
 				enemyPickedZasob = 0;
+				
 			break;
 
 
@@ -194,7 +195,7 @@ void *startKomWatek(void *ptr)
 
 		case ACK_MISKA:
 			debug("Otrzymałem ACK_MISKA od %d prio %d", pakiet.src, pakiet.data);
-			if (stan = START_ZASOB && pickedZasob == 0 && pakiet.data == ackZPriority) {
+			if (stan == START_ZASOB && pickedZasob == 0 && pakiet.data == ackZPriority) {
 				ackCountZasob++;
 				if (ackCountZasob >= size - MISKA) {
 					ackCountZasob = 0;
@@ -208,7 +209,7 @@ void *startKomWatek(void *ptr)
 
 		case ACK_PINEZKI:
 			debug("Otrzymałem ACK_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
-			if (stan = START_ZASOB && pickedZasob == 1 && pakiet.data == ackZPriority) {
+			if (stan == START_ZASOB && pickedZasob == 1 && pakiet.data == ackZPriority) {
 				ackCountZasob++;
 				if (ackCountZasob >= size - PINEZKI) {
 					ackCountZasob = 0;
@@ -223,7 +224,7 @@ void *startKomWatek(void *ptr)
 
 		case ACK_SLIPKI:
 			debug("Otrzymałem ACK_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
-			if (stan = START_ZASOB && pickedZasob == 2 && pakiet.data == ackZPriority) {
+			if (stan == START_ZASOB && pickedZasob == 2 && pakiet.data == ackZPriority) {
 				ackCountZasob++;
 				if (ackCountZasob >= size - SLIPKI) {
 					ackCountZasob = 0;
