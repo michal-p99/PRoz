@@ -135,7 +135,7 @@ void *startKomWatek(void *ptr)
 
 		case REQ_MISKA:
 			debug("Otrzymałem REQ_MISKA od %d prio %d", pakiet.src, pakiet.data);
-			q_element_t elem;
+			
 			if (pickedZasob == 0 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
@@ -154,7 +154,6 @@ void *startKomWatek(void *ptr)
 		case REQ_PINEZKI:
 			debug("Otrzymałem REQ_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
 
-			q_element_t elem;
 			if (pickedZasob == 1 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
@@ -174,7 +173,6 @@ void *startKomWatek(void *ptr)
 		case REQ_SLIPKI:
 			debug("Otrzymałem REQ_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
 
-			q_element_t elem;
 			if (pickedZasob == 2 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
 				elem.priority = pakiet.data;
 				elem.process = pakiet.src;
