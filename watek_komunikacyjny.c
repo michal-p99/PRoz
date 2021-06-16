@@ -86,7 +86,8 @@ void *startKomWatek(void *ptr)
 
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
-			if ((stan == START_SALA && pakiet.ts > ackSPriority) ||
+			if ((stan == START_ZASOB ||
+				stan == START_SALA && pakiet.ts > ackSPriority) ||
 				(stan == START_SALA && pakiet.ts == ackSPriority) && rank < pakiet.src)
 			{
 				elem.priority = pakiet.ts;
