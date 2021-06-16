@@ -85,17 +85,18 @@ void *startKomWatek(void *ptr)
 
 		case REQ_SALA:
 			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
-			if ((stan == START_SALA && pakiet.data > ackSPriority) ||
-				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
+			if ((stan == START_SALA && pakiet.ts > ackSPriority) ||
+				(stan == START_SALA && pakiet.ts == ackSPriority) && rank < pakiet.src)
 			{
-				elem.priority = pakiet.data;
+				elem.priority = pakiet.ts;
 				elem.process = pakiet.src;
 				insertElem(&queue, elem);
 			}
 			else
 			{
 				packet_t* pkt = malloc(sizeof(packet_t));
-				pkt->data = pakiet.data;
+				pkt->ts = pakiet.ts;
+				debug("pakiet ts %d", pakiet.ts);
 				sendPacket(pkt, pakiet.src, ACK_SALA);
 			}
 
@@ -104,7 +105,7 @@ void *startKomWatek(void *ptr)
 			break;
 		case ACK_SALA:
 			debug("Otrzymałem ACKSALA od %d", pakiet.src);
-			if (stan == START_SALA && pakiet.data == ackSPriority)
+			if (stan == START_SALA && pakiet.ts == ackSPriority)
 			{
 				ackCountSala++;
 				if (ackCountSala == size - SALE)
