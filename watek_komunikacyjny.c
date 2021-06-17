@@ -18,7 +18,7 @@ void *startKomWatek(void *ptr)
         switch ( status.MPI_TAG ) {
 
 		case REQ_I:
-			debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.data);
+			debug("Dostałem wiadomość PAIRING od %d ",pakiet.src);
 			q_element_t elem;
 			elem.priority = pakiet.data;
 			elem.process = pakiet.src;
