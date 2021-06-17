@@ -24,7 +24,7 @@ void *startKomWatek(void *ptr)
 			elem.process = pakiet.src;
 			insertElem(&queue, elem);
 			if (size >= 4)
-				debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+				debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 			sendPacket(0, pakiet.src, ACK_I);
 			break;
@@ -52,13 +52,13 @@ void *startKomWatek(void *ptr)
 						}
 						removeProcess(&queue, queue.data[myPos].process);
 						removeProcess(&queue, queue.data[myPos - 1].process);
-						debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+						//debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 
 						ackCountSala = 0;
 						ackSPriority = zegar;
 						rezerwujacy = TRUE;
-						debug("priority sala %d", ackSPriority);
+						//debug("priority sala %d", ackSPriority);
 						for (int i = 0; i < size; i++)
 						{
 							if (i != rank)
@@ -77,21 +77,21 @@ void *startKomWatek(void *ptr)
             break;
 
 		case PAIR:
-			debug("Dostałem wiadomość PAIR od %d z %d ts %d", pakiet.src,pakiet.enemy,pakiet.data);
+			//debug("Dostałem wiadomość PAIR od %d z %d ts %d", pakiet.src,pakiet.enemy,pakiet.data);
 			removeProcess(&queue, pakiet.src);
 			removeProcess(&queue, pakiet.enemy);
-			debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+			//debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 			if (pakiet.enemy == rank) {
 				debug("Moim przeciwnikiem jest %d ", pakiet.src);
 				przeciwnik = pakiet.src;
 				changeState(CZEKAJ_SALA, "CZEKAJ_SALA");
 			}
 
-
+			 
 			break;
 
 		case REQ_SALA:
-			debug("Otrzymałem REQ_SALA od %d", pakiet.src);
+			//debug("Otrzymałem REQ_SALA od %d", pakiet.src);
 			if (((stan == START_ZASOB ||stan == START_DEBATE) && rezerwujacy) ||
 				(stan == START_SALA && pakiet.data > ackSPriority) ||
 				(stan == START_SALA && pakiet.data == ackSPriority) && rank < pakiet.src)
@@ -105,7 +105,7 @@ void *startKomWatek(void *ptr)
 			{
 				packet_t* pkt = malloc(sizeof(packet_t));
 				pkt->data = pakiet.data;
-				debug("pakiet ts %d", pakiet.data);
+				//debug("pakiet ts %d", pakiet.data);
 				sendPacket(pkt, pakiet.src, ACK_SALA);
 			}
 
@@ -113,12 +113,13 @@ void *startKomWatek(void *ptr)
 
 			break;
 		case ACK_SALA:
-			debug("Otrzymałem ACKSALA od %d prio %d", pakiet.src,pakiet.data);
+			//debug("Otrzymałem ACKSALA od %d prio %d", pakiet.src,pakiet.data);
 			if (stan == START_SALA && pakiet.data == ackSPriority)
 			{
 				ackCountSala++;
 				if (ackCountSala == size - SALE)
 				{
+					debug("Sekcja krytyczna sal");
 					ackCountSala = 0;
 					sendPacket(0, przeciwnik, JEST_SALA);
 					changeState(START_ZASOB, "START_ZASOB");
@@ -139,7 +140,7 @@ void *startKomWatek(void *ptr)
 			break;
 
 		case REQ_MISKA:
-			debug("Otrzymałem REQ_MISKA od %d prio %d", pakiet.src, pakiet.data);
+			//debug("Otrzymałem REQ_MISKA od %d prio %d", pakiet.src, pakiet.data);
 			
 			if (pickedZasob == 0 && (stan == START_DEBATE || (stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
 				countQueueZasobSize++;
@@ -159,7 +160,7 @@ void *startKomWatek(void *ptr)
 
 
 		case REQ_PINEZKI:
-			debug("Otrzymałem REQ_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
+			//debug("Otrzymałem REQ_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
 
 			if (pickedZasob == 1 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
 				countQueueZasobSize++;
@@ -179,7 +180,7 @@ void *startKomWatek(void *ptr)
 
 
 		case REQ_SLIPKI:
-			debug("Otrzymałem REQ_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
+			//debug("Otrzymałem REQ_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
 
 			if (pickedZasob == 2 && ((stan == START_ZASOB && pakiet.data > ackZPriority) || (stan == START_ZASOB && pakiet.data == ackZPriority && rank < pakiet.src))) {
 				countQueueZasobSize++;
@@ -198,12 +199,12 @@ void *startKomWatek(void *ptr)
 			break;
 
 		case ACK_MISKA:
-			debug("Otrzymałem ACK_MISKA od %d prio %d", pakiet.src, pakiet.data);
+			//debug("Otrzymałem ACK_MISKA od %d prio %d", pakiet.src, pakiet.data);
 			if (stan == START_ZASOB && pickedZasob == 0 && pakiet.data == ackZPriority) {
 				ackCountZasob++;
 				if (ackCountZasob >= size - MISKA) {
 					ackCountZasob = 0;
-					
+					debug("Sekcja krytyczna zasobu - miska");
 					if (rezerwujacy) {
 						changeState(START_DEBATE, "START_DEBATE");
 						sendPacket(0, przeciwnik, READY);
@@ -223,12 +224,12 @@ void *startKomWatek(void *ptr)
 			break;
 
 		case ACK_PINEZKI:
-			debug("Otrzymałem ACK_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
+			//debug("Otrzymałem ACK_PINEZKI od %d prio %d", pakiet.src, pakiet.data);
 			if (stan == START_ZASOB && pickedZasob == 1 && pakiet.data == ackZPriority) {
 				ackCountZasob++;
 				if (ackCountZasob >= size - PINEZKI) {
 					ackCountZasob = 0;
-					
+					debug("Sekcja krytyczna zasobu - pinezki");
 					if (rezerwujacy) {
 						changeState(START_DEBATE, "START_DEBATE");
 						sendPacket(0, przeciwnik, READY);
@@ -249,12 +250,12 @@ void *startKomWatek(void *ptr)
 
 
 		case ACK_SLIPKI:
-			debug("Otrzymałem ACK_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
+			//debug("Otrzymałem ACK_SLIPKI od %d prio %d", pakiet.src, pakiet.data);
 			if (stan == START_ZASOB && pickedZasob == 2 && pakiet.data == ackZPriority) {
 				ackCountZasob++;
 				if (ackCountZasob >= size - SLIPKI) {
 					ackCountZasob = 0;
-					
+					debug("Sekcja krytyczna zasobu - slipki");
 					if (rezerwujacy) {
 						changeState(START_DEBATE, "START_DEBATE");
 						sendPacket(0, przeciwnik, READY);

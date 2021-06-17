@@ -101,6 +101,7 @@ void returnMiska() {
 		queue_zasob.size--;
 	}
 	countQueueZasobSize = 0;
+	debug("Wychodzê: Sekcja krytyczna zasobu - miska");
 }
 void returnPinezki(){
 	for (int i = queue_zasob.size-1; i >= 0; i--) {
@@ -123,6 +124,7 @@ void returnSlipki() {
 		queue_zasob.size--;
 	}
 	countQueueZasobSize = 0;
+	debug("Sekcja krytyczna zasobu - slipki");
 }
 void returnSale() {
 	for (int i = queue_sala.size-1; i >=0; i--) {
@@ -135,7 +137,7 @@ void returnSale() {
 	}
 	countQueueSalaSize = 0;
 	rezerwujacy = FALSE;
-	
+	debug("Sekcja krytyczna zasobu - sale");
 }
 int getResult() {
 	debug("Moje %d   enemy %d", pickedZasob, enemyPickedZasob);
