@@ -25,8 +25,8 @@ void mainLoop()
 				elem.process = rank;
 				insertElem(&queue, elem);
 
-				if (size >= 4)
-					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+				//if (size >= 4)
+					//debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 				
             } 
 			if (stan == START_DEBATE){
@@ -124,7 +124,7 @@ void returnSlipki() {
 		queue_zasob.size--;
 	}
 	countQueueZasobSize = 0;
-	debug("Sekcja krytyczna zasobu - slipki");
+	debug("Wychodzê: Sekcja krytyczna zasobu - slipki");
 }
 void returnSale() {
 	for (int i = queue_sala.size-1; i >=0; i--) {
@@ -137,10 +137,9 @@ void returnSale() {
 	}
 	countQueueSalaSize = 0;
 	rezerwujacy = FALSE;
-	debug("Sekcja krytyczna zasobu - sale");
+	debug("Wychodzê: Sekcja krytyczna zasobu - sale");
 }
 int getResult() {
-	debug("Moje %d   enemy %d", pickedZasob, enemyPickedZasob);
 	if (pickedZasob == enemyPickedZasob) {
 		if (przeciwnik > rank) {
 			return TRUE;
