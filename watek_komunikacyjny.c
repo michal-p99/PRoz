@@ -32,42 +32,46 @@ void *startKomWatek(void *ptr)
         case ACK_I:
 			//debug("Dostałem wiadomość ACK_I od %d ts %d", pakiet.src,pakiet.data);
 			if (stan == PAIRING) {
-				int myPos = findPosition(&queue, rank);
-				if (myPos % 2 == 1) {
-					przeciwnik = queue.data[myPos - 1].process;
-					debug("Moim przeciwnikiem jest %d", przeciwnik);
-					changeState(START_SALA, "START_SALA");
+				ackCountI++;
+				if (ackCountI == size - 1) {
+					ackCountI = 0;
+					int myPos = findPosition(&queue, rank);
+					if (myPos % 2 == 1) {
+						przeciwnik = queue.data[myPos - 1].process;
+						debug("Moim przeciwnikiem jest %d", przeciwnik);
+						changeState(START_SALA, "START_SALA");
 
-					int zegar = lamport;
-					for (int i = 0; i < size; i++) {
-						if (i != rank) {
-							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt->data = zegar;
-							pkt->enemy = queue.data[myPos - 1].process;
-							sendPacket(pkt, i, PAIR);
+						int zegar = lamport;
+						for (int i = 0; i < size; i++) {
+							if (i != rank) {
+								packet_t* pkt = malloc(sizeof(packet_t));
+								pkt->data = zegar;
+								pkt->enemy = queue.data[myPos - 1].process;
+								sendPacket(pkt, i, PAIR);
+							}
 						}
-					}
-					removeProcess(&queue, queue.data[myPos].process);
-					removeProcess(&queue, queue.data[myPos - 1].process);
-					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+						removeProcess(&queue, queue.data[myPos].process);
+						removeProcess(&queue, queue.data[myPos - 1].process);
+						debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 
-					ackCountSala = 0;
-					ackSPriority = zegar;
-					rezerwujacy = TRUE;
-					debug("priority sala %d", ackSPriority);
-					for (int i = 0; i < size; i++)
-					{
-						if (i != rank)
+						ackCountSala = 0;
+						ackSPriority = zegar;
+						rezerwujacy = TRUE;
+						debug("priority sala %d", ackSPriority);
+						for (int i = 0; i < size; i++)
 						{
-							packet_t* pkt = malloc(sizeof(packet_t));
-							pkt->data = ackSPriority;
-							sendPacket(pkt, i, REQ_SALA);
+							if (i != rank)
+							{
+								packet_t* pkt = malloc(sizeof(packet_t));
+								pkt->data = ackSPriority;
+								sendPacket(pkt, i, REQ_SALA);
+							}
 						}
+
+
+
 					}
-
-
-
 				}
 			}
             break;
@@ -279,7 +283,7 @@ void *startKomWatek(void *ptr)
 			break;
 
 		case RESULT:
-			debug("Otrzymałem RESULT od %d wynik %d prio %d ", pakiet.src,pakiet.enemy ,pakiet.data);
+			debug("Otrzymałem RESULT od %d wynik %d", pakiet.src,pakiet.enemy);
 			
 			wynik = pakiet.enemy;
 			resultReady = TRUE;
