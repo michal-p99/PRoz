@@ -92,7 +92,7 @@ void returnEverything() {
 	enemyReady = FALSE;
 }
 void returnMiska() {
-	for (int i = 0; i < queue_zasob.size;i++) {
+	for (int i = queue_zasob.size-1; i >= 0;i--) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_zasob.data[i].priority;
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_MISKA);
@@ -103,7 +103,7 @@ void returnMiska() {
 	countQueueZasobSize = 0;
 }
 void returnPinezki(){
-	for (int i = 0; i < queue_zasob.size; i++) {
+	for (int i = queue_zasob.size-1; i >= 0; i--) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_zasob.data[i].priority;
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_PINEZKI);
@@ -114,7 +114,7 @@ void returnPinezki(){
 	countQueueZasobSize = 0;
 	}
 void returnSlipki() {
-	for (int i = 0; i < queue_zasob.size; i++) {
+	for (int i = queue_zasob.size-1; i >= 0; i--) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_zasob.data[i].priority;
 		sendPacket(pkt, queue_zasob.data[i].process, ACK_SLIPKI);
@@ -125,7 +125,7 @@ void returnSlipki() {
 	countQueueZasobSize = 0;
 }
 void returnSale() {
-	for (int i = 0; i < queue_sala.size; i++) {
+	for (int i = queue_sala.size-1; i >=0; i--) {
 		packet_t* pkt = malloc(sizeof(packet_t));
 		pkt->data = queue_sala.data[i].priority;
 		sendPacket(pkt, queue_sala.data[i].process, ACK_SALA);
