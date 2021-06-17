@@ -29,8 +29,8 @@ void mainLoop()
 					debug("4 pierwsze elementu kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 				
             } 
-			if (stan == START_DEBATE) {
-				if (enemyReady && !(rezerwujacy) {
+			if (stan == START_DEBATE){
+				if (enemyReady && (rezerwujacy==FALSE)) {
 					debug("DEBATA ROZPOCZÊTA z %d", przeciwnik);
 					sleep(DEBATE_TIME);
 					if (getResult()){

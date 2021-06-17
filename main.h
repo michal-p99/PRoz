@@ -78,7 +78,7 @@ extern MPI_Datatype MPI_PAKIET_T;
 #define PAIR 11
 #define READY 12
 #define JEST_SALA 13
-#define RESULT 14;
+#define RESULT 14
 
 /* macro debug - działa jak printf, kiedy zdefiniowano
    DEBUG, kiedy DEBUG niezdefiniowane działa jak instrukcja pusta 
