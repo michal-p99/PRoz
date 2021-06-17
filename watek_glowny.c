@@ -34,36 +34,37 @@ void mainLoop()
 					debug("DEBATA ROZPOCZÊTA z %d", przeciwnik);
 					sleep(DEBATE_TIME);
 					if (getResult()){
+						changeState(REST, "REST");
 						debug("WYGRA£EM z %d", przeciwnik);
 						packet_t* pkt = malloc(sizeof(packet_t));
 						pkt->enemy = getResult();
 						sendPacket(pkt, przeciwnik, RESULT);
 						returnEverything();
-						changeState(REST, "REST");
 						
 						sleep(WINNER_TIME);
 
 					}
 					else{
 						debug("PRZEGRA£EM z %d", przeciwnik);
+						changeState(REST, "REST");
 						packet_t* pkt = malloc(sizeof(packet_t));
 						pkt->enemy = getResult();
 						sendPacket(pkt, przeciwnik, RESULT);
 						returnEverything();
-						changeState(REST, "REST");
 					}
 				}
 				else if (resultReady) {
 					if (wynik) {
-						debug("WYGRA£EM z %d", przeciwnik);
+						debug("DEBATA skoñczona WYGRA£EM z %d", przeciwnik);
+						changeState(REST, "REST");
 						returnEverything();
 						sleep(WINNER_TIME);
-						changeState(REST, "REST");
 					}
 					else {
-						debug("PRZEGRALEM z %d", przeciwnik);
-						returnEverything();
+						debug("DEBATA skoñczona PRZEGRALEM z %d", przeciwnik);
 						changeState(REST, "REST");
+						returnEverything();
+						
 					}
 
 
