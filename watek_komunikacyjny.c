@@ -200,8 +200,19 @@ void *startKomWatek(void *ptr)
 				if (ackCountZasob >= size - MISKA) {
 					ackCountZasob = 0;
 					
-					changeState(START_DEBATE, "START_DEBATE");
-					sendPacket(0, przeciwnik, READY);
+					if (rezerwujacy) {
+						changeState(START_DEBATE, "START_DEBATE");
+						sendPacket(0, przeciwnik, READY);
+					}
+					else {
+						if (enemyReady) {
+							changeState(START_DEBATE, "START_DEBATE");
+						}
+						else {
+							changeState(WAIT_READY, "WAIT_READY");
+						}
+							
+					}
 					
 				}
 			}
@@ -214,8 +225,19 @@ void *startKomWatek(void *ptr)
 				if (ackCountZasob >= size - PINEZKI) {
 					ackCountZasob = 0;
 					
-					changeState(START_DEBATE, "START_DEBATE");
-					sendPacket(0, przeciwnik, READY);
+					if (rezerwujacy) {
+						changeState(START_DEBATE, "START_DEBATE");
+						sendPacket(0, przeciwnik, READY);
+					}
+					else {
+						if (enemyReady) {
+							changeState(START_DEBATE, "START_DEBATE");
+						}
+						else {
+							changeState(WAIT_READY, "WAIT_READY");
+						}
+
+					}
 					
 				}
 			}
@@ -229,8 +251,19 @@ void *startKomWatek(void *ptr)
 				if (ackCountZasob >= size - SLIPKI) {
 					ackCountZasob = 0;
 					
-					changeState(START_DEBATE, "START_DEBATE");
-					sendPacket(0, przeciwnik, READY);
+					if (rezerwujacy) {
+						changeState(START_DEBATE, "START_DEBATE");
+						sendPacket(0, przeciwnik, READY);
+					}
+					else {
+						if (enemyReady) {
+							changeState(START_DEBATE, "START_DEBATE");
+						}
+						else {
+							changeState(WAIT_READY, "WAIT_READY");
+						}
+
+					}
 					
 				}
 			}
@@ -239,8 +272,17 @@ void *startKomWatek(void *ptr)
 		case READY:
 			debug("Otrzymałem READY od %d prio %d", pakiet.src, pakiet.data);
 			enemyReady = TRUE;
+			if (stan == WAIT_READY) {
+				changeState(START_DEBATE, "START_DEBATE");
+			}
 			
 			break;
+
+		case RESULT:
+			debug("Otrzymałem RESULT od %d wynik %d prio %d ", pakiet.src,pakiet.enemy ,pakiet.data);
+			
+			wynik = pakiet.enemy;
+			resultReady = TRUE;
 
 	    default:
 	    break;

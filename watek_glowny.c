@@ -30,22 +30,43 @@ void mainLoop()
 				
             } 
 			if (stan == START_DEBATE) {
-				if (enemyReady) {
+				if (enemyReady && !(rezerwujacy) {
 					debug("DEBATA ROZPOCZÊTA z %d", przeciwnik);
 					sleep(DEBATE_TIME);
-					if (getResult()) {
+					if (getResult()){
 						debug("WYGRA£EM z %d", przeciwnik);
-						changeState(REST, "REST");
+						packet_t* pkt = malloc(sizeof(packet_t));
+						pkt->enemy = getResult();
+						sendPacket(pkt, przeciwnik, RESULT);
 						returnEverything();
+						changeState(REST, "REST");
 						
 						sleep(WINNER_TIME);
 
 					}
-					else {
+					else{
 						debug("PRZEGRA£EM z %d", przeciwnik);
-						changeState(REST, "REST");
+						packet_t* pkt = malloc(sizeof(packet_t));
+						pkt->enemy = getResult();
+						sendPacket(pkt, przeciwnik, RESULT);
 						returnEverything();
+						changeState(REST, "REST");
 					}
+				}
+				else if (resultReady) {
+					if (wynik) {
+						debug("WYGRA£EM z %d", przeciwnik);
+						returnEverything();
+						sleep(WINNER_TIME);
+						changeState(REST, "REST");
+					}
+					else {
+						debug("PRZEGRALEM z %d", przeciwnik);
+						returnEverything();
+						changeState(REST, "REST");
+					}
+
+
 				}
 
 
