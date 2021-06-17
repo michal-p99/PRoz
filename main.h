@@ -54,6 +54,7 @@ extern int enemyPickedZasob;
 extern int enemyReady;
 extern int resultReady;
 extern int wynik;
+extern int ackCountI;
 /* to może przeniesiemy do global... */
 typedef struct {
     int ts;       /* timestamp (zegar lamporta */
