@@ -23,8 +23,8 @@ void *startKomWatek(void *ptr)
 			elem.priority = pakiet.data;
 			elem.process = pakiet.src;
 			insertElem(&queue, elem);
-			if (size >= 4)
-				debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
+			//if (size >= 4)
+				//debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
 			sendPacket(0, pakiet.src, ACK_I);
 			break;
