@@ -18,11 +18,12 @@ void *startKomWatek(void *ptr)
         switch ( status.MPI_TAG ) {
 
 		case REQ_I:
-			debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.data);
+			
 			q_element_t elem;
 			elem.priority = pakiet.data;
 			elem.process = pakiet.src;
 			insertElem(&queue, elem);
+			//debug("Dostałem wiadomość PAIRING od %d ts %d",pakiet.src,pakiet.data);
 			//if (size >= 4)
 				//debug("4 elem kolejki: [%d, %d, %d, %d, ...", queue.data[0].process, queue.data[1].process, queue.data[2].process, queue.data[3].process);
 
